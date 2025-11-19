@@ -82,8 +82,12 @@ export const AuthProvider = ({ children }) => {
 
     // Handle errors first
     if (!res.ok) {
-      const err = await res.json();
-      return err.message;
+      try {
+        const err = await res.json();
+        return err.message || "An error occurred";
+      } catch (e) {
+        return "An error occurred";
+      }
     }
 
     const data = await res.json();
@@ -99,7 +103,7 @@ export const AuthProvider = ({ children }) => {
     setUser(meData.user);
 
     navigate("/profile");
-    return null;
+    return "";
   };
 
   /**
@@ -118,12 +122,16 @@ export const AuthProvider = ({ children }) => {
     });
 
     if (!res.ok) {
-      const err = await res.json();
-      return err.message;
+      try {
+        const err = await res.json();
+        return err.message || "An error occurred";
+      } catch (e) {
+        return "An error occurred";
+      }
     }
 
     navigate("/success");
-    return null;
+    return "";
   };
 
   return (
