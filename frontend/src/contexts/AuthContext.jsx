@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
 
     fetch(`${BACKEND_URL}/user/me`, {
       method: "GET",
-      header: {
+      headers: {
         Authorization: `Bearer ${token}`,
       },
     })
@@ -54,7 +54,7 @@ export const AuthProvider = ({ children }) => {
    */
   const logout = () => {
     // TODO: complete me
-    localStorage.removeItem(token);
+    localStorage.removeItem("token");
     setUser(null);
 
     navigate("/");
@@ -104,12 +104,7 @@ export const AuthProvider = ({ children }) => {
     const res = await fetch(`${BACKEND_URL}/register`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({
-        username,
-        firstname,
-        lastname,
-        password,
-      }),
+      body: JSON.stringify(userData),
     });
 
     if (!res.ok) {
