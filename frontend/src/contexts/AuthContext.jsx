@@ -36,6 +36,10 @@ export const AuthProvider = ({ children }) => {
         Authorization: `Bearer ${token}`,
       },
     })
+      .then(async (res) => {
+        if (!res.ok) throw await res.json();
+        return res.json();
+      })
       .then((data) => {
         setUser(data.user);
       })
@@ -76,6 +80,12 @@ export const AuthProvider = ({ children }) => {
       body: JSON.stringify({ username, password }),
     });
 
+    // Handle errors first
+    if (!res.ok) {
+      const err = await res.json();
+      return err.message;
+    }
+
     const data = await res.json();
     localStorage.setItem("token", data.token); // save token
     // fetch user data
@@ -87,9 +97,9 @@ export const AuthProvider = ({ children }) => {
 
     const meData = await meRes.json();
     setUser(meData.user);
+
     navigate("/profile");
     return null;
-    ("TODO: complete me");
   };
 
   /**
